@@ -3,6 +3,15 @@
 {% block title %}Resultados Contables{% endblock %}
 
 {% block content %}
+    <h1>Filtrar por Fechas</h1>
+    <form method="get" action="{% url 'resultados' %}">
+        <label for="fecha_inicio">Fecha Inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio" required>
+        <label for="fecha_final">Fecha Final:</label>
+        <input type="date" id="fecha_final" name="fecha_final" required>
+        <button type="submit">Filtrar</button>
+    </form>
+
     <h1>Libro Diario</h1>
     <table class="table table-bordered">
         <thead>
