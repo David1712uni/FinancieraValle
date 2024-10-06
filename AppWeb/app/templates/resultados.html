@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Resultados Contables{% endblock %}
+
+{% block content %}
+    <h1>Libro Diario</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Cuenta</th>
+                <th>Debe</th>
+                <th>Haber</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fecha, cuenta, debe, haber in libro_diario %}
+                <tr>
+                    <td>{{ fecha }}</td>
+                    <td>{{ cuenta }}</td>
+                    <td>{{ debe }}</td>
+                    <td>{{ haber }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Mayores</h1>
+    {% for mayor in resultados_mayores %}
+        <h2>Mayor: {{ mayor.cuenta }}</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Debe</th>
+                    <th>Haber</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fecha, debe, haber in mayor.fechas_debe_haber %}
+                    <tr>
+                        <td>{{ fecha }}</td>
+                        <td>{{ debe }}</td>
+                        <td>{{ haber }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td>Total</td>
+                    <td>{{ mayor.total_debe }}</td>
+                    <td>{{ mayor.total_haber }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}

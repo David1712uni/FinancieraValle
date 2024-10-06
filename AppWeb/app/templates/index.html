@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Registro Contable{% endblock %}
+
+{% block content %}
+    <h1>Registro Contable</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Este renderiza todo el formulario de forma automática -->
+        <button type="submit" class="btn btn-primary">Agregar</button>
+    </form>
+
+    <a href="{% url 'resultados' %}" class="btn btn-link">Ver Resultados</a>
+{% endblock %}
+{% if errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field, error_list in errors.items %}
+                {% for error in error_list %}
+                    <li>{{ field }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
