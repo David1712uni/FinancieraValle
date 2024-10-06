@@ -197,15 +197,25 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+from django.utils import timezone
 
 def mostrar_resultados(request):
-    # Obtenemos todos los asientos contables
-    asientos = AsientoContable.objects.all()
+    # Obtener fechas de inicio y fin desde el formulario
+    fecha_inicio = request.GET.get('fecha_inicio')
+    fecha_final = request.GET.get('fecha_final')
+
+    # Filtrar los asientos contables según las fechas, si están disponibles
+    if fecha_inicio and fecha_final:
+        # Convertir las fechas de cadena a objeto de fecha
+        fecha_inicio = timezone.datetime.strptime(fecha_inicio, '%Y-%m-%d')
+        fecha_final = timezone.datetime.strptime(fecha_final, '%Y-%m-%d')
+        asientos = AsientoContable.objects.filter(fecha__range=(fecha_inicio, fecha_final))
+    else:
+        asientos = AsientoContable.objects.all()
 
     # Calcular el libro diario
     libro_diario = []
     for asiento in asientos:
-        # Utilizando fecha, cuenta, tipo_monto y monto
         debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
         haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
         libro_diario.append((asiento.fecha, asiento.cuenta, debe, haber))
