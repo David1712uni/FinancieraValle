@@ -222,7 +222,8 @@ def mostrar_resultados(request):
     for asiento in asientos:
         debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
         haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
-        libro_diario.append((asiento.fecha, asiento.cuenta, debe, haber))
+
+        libro_diario.append((asiento.fecha, asiento.cuenta, asiento.tipo_cuenta, debe, haber))
 
     # Calcular los mayores
     mayores = {}
