@@ -17,18 +17,20 @@
         <thead>
             <tr>
                 <th>Fecha</th>
+                <th>Tipo de Cuenta</th>
                 <th>Cuenta</th>
-                <th>Cuenta específica</th>
+                <th>Glose</th>
                 <th>Debe</th>
                 <th>Haber</th>
             </tr>
         </thead>
         <tbody>
-            {% for fecha, cuenta, tipo_cuenta, debe, haber in libro_diario %}
+            {% for fecha, cuenta, tipo_cuenta, glose, debe, haber in libro_diario %}
                 <tr>
                     <td>{{ fecha }}</td>
                     <td>{{ cuenta }}</td>
                     <td>{{ tipo_cuenta }}</td>
+                    <td>{{ glose }}</td>
                     <td>{{ debe }}</td>
                     <td>{{ haber }}</td>
                 </tr>
@@ -85,7 +87,7 @@
                 <td>{{ estado_resultados.utilidad_bruta }}</td>
             </tr>
             <tr>
-                <td>- GASTOS OPERATIVOS</td>
+                <td>-- GASTOS OPERATIVOS: </td>
                 <td></td>
             </tr>
             <tr>
