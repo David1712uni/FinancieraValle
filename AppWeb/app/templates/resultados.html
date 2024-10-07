@@ -129,6 +129,216 @@
         </tbody>
     </table>
     
+ 
+    <h1>Estado Financiero</h1>
 
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>**Activos**</th>
+                <th>**Monto (en $)**</th>
+                <th>**Pasivos y Patrimonio**</th>
+                <th>**Monto (en $)**</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="1"><strong>Activos Corrientes</strong></td>
+                <td></td>
+                <td><strong>Pasivos Corrientes</strong></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Efectivo y Equivalentes de Efectivo</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.10 }}</td>
+                <td>Tributos y Aportes al Sistema de Pensiones y de Salud por Pagar</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.40 }}</td>
+            </tr>
+            <tr>
+                <td>Inversiones Financieras</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.11 }}</td>
+                <td>Remuneraciones y Participaciones por Pagar</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.41 }}</td>
+            </tr>
+            <tr>
+                <td>Cuentas por Cobrar Comerciales Terceros</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.12 }}</td>
+                <td>Cuentas por Pagar Comerciales Terceros</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.42 }}</td>
+            </tr>
+            <tr>
+                <td>Cuentas por Cobrar Comerciales Relacionadas</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.13 }}</td>
+                <td>Cuentas por Pagar Comerciales Relacionadas</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.43 }}</td>
+            </tr>
+            <tr>
+                <td>Cuentas por Cobrar al Personal, a los Accionistas</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.14 }}</td>
+                <td>Cuentas por Pagar a los Accionistas, Directores y Gerentes</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.44 }}</td>
+            </tr>
+            <tr>
+                <td>Cuentas por Cobrar Diversas Terceros</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.16}}</td>
+                <td>Cuentas por Pagar Diversas Terceros</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.46}}</td>
+            </tr>
+            <tr>
+                <td>Cuentas por Cobrar Diversas Relacionadas</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.17 }}</td>
+                <td>Cuentas por Pagar Diversas Relacionadas</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.47 }}</td>
+            </tr>
+            <tr>
+                <td>Servicios y Otros Contratados por Anticipado</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.18 }}</td>
+                <td>Provisiones</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.48 }}</td>
+            </tr>
+            <tr>
+                <td>Mercaderías</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.20 }}</td>
+                <td><strong>Total Pasivos Corrientes</strong></td>
+                <td><strong>{{ estado_situacion_financiera.total_pasivo_corriente }}</strong></td>
+            </tr>
+            <tr>
+                <td>Productos Terminados</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.21 }}</td>
+                <td><strong>Pasivos No Corrientes</strong></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Subproductos, Desechos y Desperdicios</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.22 }}</td>
+                <td>Obligaciones Financieras</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.45 }}</td>
+            </tr>
+            <tr>
+                <td>Productos en Proceso</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.23 }}</td>
+                <td>Pasivo Diferido</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.49 }}</td>
+            </tr>
+            <tr>
+                <td>Materias Primas</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.24 }}</td>
+                <td><strong>Total Pasivos No Corrientes</strong></td>
+                <td><strong>{{ estado_situacion_financiera.total_pasivo_no_corriente }}</strong></td>
+            </tr>
+            <tr>
+                <td>Materiales Auxiliares, Suministros y Repuesto</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.25 }}</td>
+                <td><strong>Patrimonio</strong></td>
+                <td>{{ estado_situacion_financiera.total_patrimonio }}</td>
+            </tr>
+            <tr>
+                <td>Envases y Embalajes</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.26 }}</td>
+                <td>Capital</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.50 }}</td>
+            </tr>
+            <tr>
+                <td>Activos No Corrientes Mantenidos para la Vent</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.27 }}</td>
+                <td>Acciones de Inversión</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.51 }}</td>
+            </tr>
+            <tr>
+                <td>Existencias por Recibir</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.28 }}</td>
+                <td>Capital Adicional</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.52 }}</td>
+            </tr>
+            <tr>
+                <td><strong>Total Activos Corrientes</strong></td>
+                <td><strong>{{ estado_situacion_financiera.total_activo_corriente }}</strong></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>Activos No Corrientes</strong></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Inversiones Mobiliarias</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.30 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Inversiones Inmobiliarias</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.31 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Activos Adquiridos en Arrendamiento Financiero</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.32 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Inmuebles, Maquinaria y Equipo</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.33 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Intangibles</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.34 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Activos Biológicos</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.35 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Desvalorización de Activo Inmovilizado</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.36 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Activo Diferido</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.37 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Otros Activos</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.38 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Depreciación, Amortización y Agotamiento Acumulados</td>
+                <td>{{ estado_situacion_financiera.valores_cuentas.39 }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>Total Activos No Corrientes</strong></td>
+                <td><strong>{{ estado_situacion_financiera.total_activo_no_corriente }}</strong></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><strong>Total Activos</strong></td>
+                <td><strong>{{ estado_situacion_financiera.total_activo }}</strong></td>
+                <td><strong>Total Pasivos y Patrimonio</strong></td>
+                <td><strong>{{ estado_situacion_financiera.total_pasivo_patrimonio }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+    
+    
 
 {% endblock %}
