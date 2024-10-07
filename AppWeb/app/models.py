@@ -6,6 +6,7 @@ class AsientoContable(models.Model):
     tipo_cuenta = models.CharField(max_length=10, choices=[('AC', 'Activo Circulante'), ('ANC', 'Activo No Circulante'), ('P', 'Pasivo'), ('PT', 'Patrimonio'), ('C', 'Costos o gastos'), ('I', 'Ingresos'), ('CC', 'Cuentas de Cierre'), ('CEA', 'Cuentas Analíticas de Explotación')])
     tipo_monto = models.CharField(max_length=5, choices=[('Debe', 'Debe'), ('Haber', 'Haber')])
     monto = models.FloatField()
+    glose = models.TextField(blank=True, null=True)
     
     def __str__(self):
         return f"{self.cuenta} ({self.fecha})"
