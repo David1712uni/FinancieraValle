@@ -303,8 +303,7 @@ def mostrar_resultados(request):
     for asiento in asientos:
         debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
         haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
-
-        libro_diario.append((asiento.fecha, asiento.cuenta, cuentas_dict[asiento.tipo_cuenta], debe, haber))
+        libro_diario.append((asiento.fecha, asiento.cuenta, cuentas_dict[asiento.tipo_cuenta], asiento.glose, debe, haber))
 
     # Calcular los mayores
     mayores = {}
@@ -333,6 +332,7 @@ def mostrar_resultados(request):
         'gastos_administrativos': 0,
         'gastos_ventas': 0,
         'otros_ingresos': 0,
+        'ingresos_financieros': 0,
         'otros_gastos': 0,
         'gastos_financieros': 0,
         'impuesto_renta': 0,
@@ -351,6 +351,8 @@ def mostrar_resultados(request):
             estado_resultados['gastos_ventas'] += asiento.monto
         elif asiento.tipo_cuenta == '75':
             estado_resultados['otros_ingresos'] += asiento.monto
+        elif asiento.tipo_cuenta == '77':
+            estado_resultados['ingresos_financieros'] += asiento.monto
         elif asiento.tipo_cuenta == '65':
             estado_resultados['otros_gastos'] += asiento.monto
         elif asiento.tipo_cuenta == '67':
@@ -361,7 +363,7 @@ def mostrar_resultados(request):
     # Calcular utilidades
     utilidad_bruta = estado_resultados['ventas'] - estado_resultados['costo_ventas']
     utilidad_operacion = utilidad_bruta - estado_resultados['gastos_administrativos'] - estado_resultados['gastos_ventas']
-    utilidad_antes_impuestos = utilidad_operacion + estado_resultados['otros_ingresos'] - estado_resultados['otros_gastos'] - estado_resultados['gastos_financieros']
+    utilidad_antes_impuestos = utilidad_operacion + estado_resultados['otros_ingresos'] + estado_resultados['ingresos_financieros'] - estado_resultados['otros_gastos'] - estado_resultados['gastos_financieros']
     utilidad_neta = utilidad_antes_impuestos - estado_resultados['impuesto_renta']
 
 
@@ -478,6 +480,8 @@ def mostrar_resultados(request):
             'gastos_ventas': estado_resultados['gastos_ventas'],
             'utilidad_operacion': utilidad_operacion,
             'otros_ingresos': estado_resultados['otros_ingresos'],
+            'ingresos_financieros': estado_resultados['ingresos_financieros'],
+            'otros_gastos': estado_resultados['otros_gastos'],
             'gastos_financieros': estado_resultados['gastos_financieros'],
             'utilidad_antes_impuestos': utilidad_antes_impuestos,
             'impuesto_renta': estado_resultados['impuesto_renta'],
