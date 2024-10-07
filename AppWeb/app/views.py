@@ -282,6 +282,109 @@ def mostrar_resultados(request):
     utilidad_antes_impuestos = utilidad_operacion + estado_resultados['otros_ingresos'] - estado_resultados['otros_gastos'] - estado_resultados['gastos_financieros']
     utilidad_neta = utilidad_antes_impuestos - estado_resultados['impuesto_renta']
 
+
+    #Estado Financiero
+    activos_corrientes = {}
+    pasivos_corrientes = {}
+    activos_no_corrientes = {}
+    pasivos_no_corrientes = {}
+    patrimonio = {}
+
+    valores_cuentas = {
+        '10': 0,
+        '11': 0,
+        '12': 0,
+        '13': 0,
+        '14': 0,
+        '16': 0,
+        '17': 0,
+        '18': 0,
+        '20': 0,
+        '21': 0,
+        '22': 0,
+        '23': 0,
+        '24': 0,
+        '25': 0,
+        '26': 0,
+        '27': 0,
+        '28': 0,
+        '29': 0,
+        '30': 0,
+        '31': 0,
+        '32': 0,
+        '33': 0,
+        '34': 0,
+        '35': 0,
+        '36': 0,
+        '37': 0,
+        '38': 0,
+        '39': 0,
+        '40': 0,
+        '41': 0,
+        '42': 0,
+        '43': 0,
+        '44': 0,
+        '45': 0,
+        '46': 0,
+        '47': 0,
+        '48': 0,
+        '49': 0,
+        '50': 0,
+        '51': 0,
+        '52': 0,
+        '56': 0,
+        '57': 0,
+        '58': 0,
+    }
+
+    for asiento in asientos:
+        cuenta = asiento.cuenta
+        tipo_cuenta = asiento.tipo_cuenta
+        monto = asiento.monto if asiento.tipo_monto == 'Debe' else -asiento.monto
+        if tipo_cuenta== 'Desconocido':
+            continue
+
+        if cuenta== 'AC':
+            if tipo_cuenta not in activos_corrientes:
+                activos_corrientes[tipo_cuenta] = 0
+            activos_corrientes[tipo_cuenta] += monto
+            valores_cuentas[tipo_cuenta] += monto
+        elif cuenta== 'ANC':
+            if tipo_cuenta not in activos_no_corrientes:
+                activos_no_corrientes[tipo_cuenta] = 0
+            activos_no_corrientes[tipo_cuenta] += monto
+            valores_cuentas[tipo_cuenta] += monto
+        elif cuenta== 'P' and  ( tipo_cuenta in ["40", "41", "42", "43", "44", "46", "47", "48"]):
+            if tipo_cuenta not in pasivos_corrientes:
+                pasivos_corrientes[tipo_cuenta] = 0
+            pasivos_corrientes[tipo_cuenta] += monto
+            valores_cuentas[tipo_cuenta] += monto
+        elif cuenta== 'P' and  ( tipo_cuenta in ["45","49"] ):
+            if tipo_cuenta not in pasivos_no_corrientes:
+                pasivos_no_corrientes[tipo_cuenta] = 0
+            pasivos_no_corrientes[tipo_cuenta] += monto
+            valores_cuentas[tipo_cuenta] += monto
+        elif cuenta == 'PT':
+            if tipo_cuenta not in patrimonio:
+                patrimonio[tipo_cuenta] = 0
+            patrimonio[tipo_cuenta] += monto
+            valores_cuentas[tipo_cuenta] += monto
+
+    total_activo_corriente = sum(activos_corrientes.values())
+    total_pasivo_corriente = sum(pasivos_corrientes.values())
+    total_activo_no_corriente = sum(activos_no_corrientes.values())
+    total_pasivo_no_corriente = sum(pasivos_no_corrientes.values())
+    total_patrimonio = sum(patrimonio.values())
+
+
+    total_activo = total_activo_corriente + total_activo_no_corriente
+    total_pasivo = total_pasivo_corriente + total_pasivo_no_corriente
+    total_pasivo = total_patrimonio
+    total_pasivo_patrimonio=  total_pasivo + total_pasivo
+
+
+    
+
     context = {
         'libro_diario': libro_diario,
         'resultados_mayores': resultados_mayores,
@@ -298,5 +401,23 @@ def mostrar_resultados(request):
             'impuesto_renta': estado_resultados['impuesto_renta'],
             'utilidad_neta': utilidad_neta,
         },
+        'estado_situacion_financiera': {
+        'activos_corrientes': activos_corrientes,
+        'pasivos_corrientes': pasivos_corrientes,
+        'activos_no_corrientes': activos_no_corrientes,
+        'patrimonio': patrimonio,
+        'total_activo_corriente': total_activo_corriente,
+        'total_activo_no_corriente': total_activo_no_corriente,
+        'total_pasivo_corriente': total_pasivo_corriente,
+        'total_pasivo_no_corriente': total_pasivo_no_corriente,
+        'total_activo': total_activo,
+        'total_pasivo': total_pasivo,
+        'total_patrimonio': total_patrimonio,
+        'total_pasivo_patrimonio': total_pasivo_patrimonio,
+        'valores_cuentas' : valores_cuentas
+        },
     }
+
     return render(request, 'resultados.html', context)
+
+    
