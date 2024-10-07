@@ -18,15 +18,17 @@
             <tr>
                 <th>Fecha</th>
                 <th>Cuenta</th>
+                <th>Cuenta específica</th>
                 <th>Debe</th>
                 <th>Haber</th>
             </tr>
         </thead>
         <tbody>
-            {% for fecha, cuenta, debe, haber in libro_diario %}
+            {% for fecha, cuenta, tipo_cuenta, debe, haber in libro_diario %}
                 <tr>
                     <td>{{ fecha }}</td>
                     <td>{{ cuenta }}</td>
+                    <td>{{ tipo_cuenta }}</td>
                     <td>{{ debe }}</td>
                     <td>{{ haber }}</td>
                 </tr>
