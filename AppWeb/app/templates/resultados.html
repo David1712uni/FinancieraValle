@@ -61,4 +61,74 @@
             </tbody>
         </table>
     {% endfor %}
+
+
+    <h1>Estado de Resultados</h1>
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td><strong>VENTAS NETAS</strong></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>- VENTAS</td>
+                <td>{{ estado_resultados.ventas }}</td>
+            </tr>
+            <tr>
+                <td>- COSTO DE VENTAS</td>
+                <td>{{ estado_resultados.costo_ventas }}</td>
+            </tr>
+            <tr>
+                <td>= UTILIDAD BRUTA</td>
+                <td>{{ estado_resultados.utilidad_bruta }}</td>
+            </tr>
+            <tr>
+                <td>- GASTOS OPERATIVOS</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>- GASTOS ADMINISTRATIVOS</td>
+                <td>{{ estado_resultados.gastos_administrativos }}</td>
+            </tr>
+            <tr>
+                <td>- GASTOS DE VENTAS</td>
+                <td>{{ estado_resultados.gastos_ventas }}</td>
+            </tr>
+            <tr>
+                <td>= UTILIDAD DE OPERACIÓN</td>
+                <td>{{ estado_resultados.utilidad_operacion }}</td>
+            </tr>
+            <tr>
+                <td>+ OTROS INGRESOS</td>
+                <td>{{ estado_resultados.otros_ingresos }}</td>
+            </tr>
+            <tr>
+                <td>+ INGRESOS FINANCIEROS</td>
+                <td>{{ estado_resultados.ingresos_financieros }}</td>
+            </tr>
+            <tr>
+                <td>- OTROS GASTOS</td>
+                <td>{{ estado_resultados.otros_gastos }}</td>
+            </tr>
+            <tr>
+                <td>- GASTOS FINANCIEROS</td>
+                <td>{{ estado_resultados.gastos_financieros }}</td>
+            </tr>
+            <tr>
+                <td>= UTILIDAD ANTES DE IMPUESTOS</td>
+                <td>{{ estado_resultados.utilidad_antes_impuestos }}</td>
+            </tr>
+            <tr>
+                <td>- IMPUESTO A LA RENTA</td>
+                <td>{{ estado_resultados.impuesto_renta }}</td>
+            </tr>
+            <tr>
+                <td>= UTILIDAD NETA</td>
+                <td>{{ estado_resultados.utilidad_neta }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+
 {% endblock %}
