@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 ('tipo_cuenta', models.CharField(choices=[('AC', 'Activo Circulante'), ('ANC', 'Activo No Circulante'), ('P', 'Pasivo'), ('PT', 'Patrimonio'), ('G', 'Gastos'), ('C', 'Costo'), ('I', 'Ingresos')], max_length=10)),
                 ('tipo_monto', models.CharField(choices=[('Debe', 'Debe'), ('Haber', 'Haber')], max_length=5)),
                 ('monto', models.FloatField()),
+                ('glose', models.TextField(blank=True, null=True)),
             ],
         ),
     ]
