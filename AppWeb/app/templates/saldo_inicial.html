@@ -28,4 +28,28 @@
         </button>
     </form>
 
+    <h2 class="text-2xl font-bold mb-4">Saldo Iniciales registrados (cero por defecto)</h2>
+    <div class="overflow-x-auto mb-8">
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th>Cuenta</th>
+                    <th>Saldo Inicial</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for saldo in saldos %}
+                    <tr>
+                        <td>{{ saldo.cuenta }}</td>
+                        <td>{{ saldo.saldo_inicial }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
 {% endblock %}
