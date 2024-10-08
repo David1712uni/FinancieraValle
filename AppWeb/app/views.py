@@ -334,7 +334,7 @@ def mostrar_resultados(request):
         if asiento.tipo_cuenta not in mayores_ce.keys():
             mayores_ce[asiento.tipo_cuenta] = {'fechas_debe_haber': [], 'total_debe': 0, 'total_haber': 0, 'saldo_final': 0}
 
-            saldo_cuenta = saldos.filter(cuenta=asiento.tipo_cuenta).first()
+            saldo_cuenta = saldos.filter(cuenta=asiento.tipo_cuenta).last()
             if saldo_cuenta :
                 mayores_ce[asiento.tipo_cuenta]['saldo_final'] = float(saldo_cuenta.saldo_inicial)
        
@@ -549,8 +549,26 @@ def elegir_saldos(request):
             saldo_form.save()
             return redirect('saldo_inicial')  # Redirige después de guardar el saldo inicial
 
+
+    saldos = Saldo_Inicial.objects.all()
+    from django.db.models import Max
+
+    # Obtener el último id para cada cuenta
+    ultimos_ids = Saldo_Inicial.objects.values('cuenta').annotate(ultimo_id=Max('id'))
+
+    # Obtener los registros completos usando esos últimos ids
+    saldos_filtrados = Saldo_Inicial.objects.filter(id__in=[item['ultimo_id'] for item in ultimos_ids])
+
+    # Formatear la salida
+    resultado = [{'cuenta': saldo.cuenta, 'saldo_inicial': saldo.saldo_inicial} for saldo in saldos_filtrados]
+
+
     context = {
         'saldo_form': saldo_form,
+        'saldos': resultado,
     }
+
+
+
     return render(request, 'saldo_inicial.html', context)
     
