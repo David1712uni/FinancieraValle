@@ -339,7 +339,7 @@ def mostrar_resultados(request):
             saldo_cuenta = saldos.filter(cuenta=asiento.tipo_cuenta).last()
             if saldo_cuenta :
                 mayores_ce[asiento.tipo_cuenta]['saldo_final'] = float(saldo_cuenta.saldo_inicial)
-       
+
         debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
         haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
 
@@ -347,8 +347,15 @@ def mostrar_resultados(request):
         mayores_ce[asiento.tipo_cuenta]['fechas_debe_haber'].append((asiento.fecha, debe, haber))
         mayores_ce[asiento.tipo_cuenta]['total_debe'] += debe
         mayores_ce[asiento.tipo_cuenta]['total_haber'] += haber
-        mayores_ce[asiento.tipo_cuenta]['saldo_final'] += debe
-        mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= haber
+        
+
+        if  40 <= int(tipo_cuenta) and int(tipo_cuenta) <= 59 :
+            mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= debe
+            mayores_ce[asiento.tipo_cuenta]['saldo_final'] += haber
+        else:
+            mayores_ce[asiento.tipo_cuenta]['saldo_final'] += debe
+            mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= haber
+        
 
     # Transformamos los resultados a una lista para pasarlos al contexto
 
@@ -466,6 +473,7 @@ def mostrar_resultados(request):
             monto = -asiento.monto if asiento.tipo_monto == 'Debe' else asiento.monto
         else:
             monto = asiento.monto if asiento.tipo_monto == 'Debe' else -asiento.monto
+        
 
         if cuenta== 'AC':
             if tipo_cuenta not in activos_corrientes:
