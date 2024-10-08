@@ -1,20 +1,32 @@
-
 {% extends 'base.html' %}
 
-{% block title %}Registro Contable{% endblock %}
+{% block title %}Saldos Iniciales{% endblock %}
 
 {% block content %}
-    <h1 class="mt-4">Elegir Saldos Iniciales</h1>
+    <h1 class="text-3xl font-bold mb-6">Elegir Saldos Iniciales</h1>
 
-    <form method="post">
+    <form method="post" class="space-y-4">
         {% csrf_token %}
-        {{ saldo_form.as_p }}
-        <button type="submit" name="modificar_saldo" class="btn btn-secondary">Modificar Saldo Inicial</button>
+        {% for field in saldo_form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="text-red-500 text-sm mt-1">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" name="modificar_saldo" class="btn-primary">Modificar Saldo Inicial</button>
     </form>
 
-    <a href="{% url 'index' %}" class="btn btn-link">Volver a Página principal</a>
+    <div class="mt-6">
+        <a href="{% url 'index' %}" class="btn-link">Volver a Página principal</a>
+    </div>
 {% endblock %}
-
 
 
 

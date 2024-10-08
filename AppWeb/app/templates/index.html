@@ -3,25 +3,123 @@
 {% block title %}Registro Contable{% endblock %}
 
 {% block content %}
-    <h1>Registro Contable</h1>
-    <form method="post">
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center text-primary">Registro Contable</h1>
+    
+    <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {% csrf_token %}
-        {{ form.as_p }}  <!-- Este renderiza todo el formulario de forma automática -->
-        <button type="submit" class="btn btn-primary">Agregar</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.fecha.id_for_label }}">
+                    Fecha
+                </label>
+                {{ form.fecha }}
+                {% if form.fecha.errors %}
+                    <p class="text-red-500 text-xs italic mt-2">{{ form.fecha.errors }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.cuenta.id_for_label }}">
+                    Cuenta
+                </label>
+                {{ form.cuenta }}
+                {% if form.cuenta.errors %}
+                    <p class="text-red-500 text-xs italic mt-2">{{ form.cuenta.errors }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.tipo_cuenta.id_for_label }}">
+                    Tipo de Cuenta
+                </label>
+                {{ form.tipo_cuenta }}
+                {% if form.tipo_cuenta.errors %}
+                    <p class="text-red-500 text-xs italic mt-2">{{ form.tipo_cuenta.errors }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.tipo_monto.id_for_label }}">
+                    Tipo de Monto
+                </label>
+                {{ form.tipo_monto }}
+                {% if form.tipo_monto.errors %}
+                    <p class="text-red-500 text-xs italic mt-2">{{ form.tipo_monto.errors }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.monto.id_for_label }}">
+                    Monto
+                </label>
+                {{ form.monto }}
+                {% if form.monto.errors %}
+                    <p class="text-red-500 text-xs italic mt-2">{{ form.monto.errors }}</p>
+                {% endif %}
+            </div>
+            
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.glose.id_for_label }}">
+                    Glose
+                </label>
+                {{ form.glose }}
+                {% if form.glose.errors %}
+                    <p class="text-red-500 text-xs italic mt-2">{{ form.glose.errors }}</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="flex items-center justify-between mt-6">
+            <button type="submit" class="btn btn-primary w-full">
+                Agregar Registro
+            </button>
+        </div>
     </form>
 
-    <a href="{% url 'resultados' %}" class="btn btn-link">Ver Resultados</a>
-    <a href="{% url 'saldo_inicial' %}" class="btn btn-link">Modificar Saldos Iniciales</a>
-{% endblock %}
-{% if errors %}
-    <div class="alert alert-danger">
-        <ul>
-            {% for field, error_list in errors.items %}
-                {% for error in error_list %}
-                    <li>{{ field }}: {{ error }}</li>
+    {% if errors %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Error!</strong>
+            <ul class="mt-2">
+                {% for field, error_list in errors.items %}
+                    {% for error in error_list %}
+                        <li>{{ field }}: {{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
+            </ul>
+        </div>
+    {% endif %}
 
+    <div class="flex justify-center space-x-4 mt-6">
+        <a href="{% url 'resultados' %}" class="btn btn-secondary">Ver Resultados</a>
+        <a href="{% url 'saldo_inicial' %}" class="btn btn-secondary">Modificar Saldos Iniciales</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const fields = form.querySelectorAll('input, select, textarea');
+        
+        fields.forEach(field => {
+            field.classList.add('shadow', 'appearance-none', 'border', 'rounded', 'w-full', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline', 'transition', 'duration-300');
+            
+            if (field.tagName === 'SELECT') {
+                field.classList.add('bg-white');
+            }
+            
+            if (field.type === 'date') {
+                field.classList.add('cursor-pointer');
+            }
+            
+            field.addEventListener('focus', function() {
+                this.classList.add('border-primary');
+            });
+            
+            field.addEventListener('blur', function() {
+                this.classList.remove('border-primary');
+            });
+        });
+    });
+</script>
+{% endblock %}

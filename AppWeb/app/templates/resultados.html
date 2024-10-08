@@ -3,381 +3,382 @@
 {% block title %}Resultados Contables{% endblock %}
 
 {% block content %}
-    <h1>Filtrar por Fechas</h1>
-    <form method="get" action="{% url 'resultados' %}">
-        <label for="fecha_inicio">Fecha Inicio:</label>
-        <input type="date" id="fecha_inicio" name="fecha_inicio" required>
-        <label for="fecha_final">Fecha Final:</label>
-        <input type="date" id="fecha_final" name="fecha_final" required>
-        <button type="submit">Filtrar</button>
+    <h1 class="text-3xl font-bold mb-6">Filtrar por Fechas</h1>
+    <form method="get" action="{% url 'resultados' %}" class="space-y-4 mb-8">
+        <div class="flex space-x-4">
+            <div class="flex-1">
+                <label for="fecha_inicio" class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+            <div class="flex-1">
+                <label for="fecha_final" class="block text-sm font-medium text-gray-700 mb-1">Fecha Final:</label>
+                <input type="date" id="fecha_final" name="fecha_final" required class="w-full px-3 py-2 border border-gray-300 rounded-md">
+            </div>
+        </div>
+        <button type="submit" class="btn-primary">Filtrar</button>
     </form>
 
-    <h1>Libro Diario</h1>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>Tipo de Cuenta</th>
-                <th>Cuenta</th>
-                <th>Glose</th>
-                <th>Debe</th>
-                <th>Haber</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for fecha, cuenta, tipo_cuenta, glose, debe, haber in libro_diario %}
+    <h2 class="text-2xl font-bold mb-4">Libro Diario</h2>
+    <div class="overflow-x-auto mb-8">
+        <table class="w-full">
+            <thead>
                 <tr>
-                    <td>{{ fecha }}</td>
-                    <td>{{ cuenta }}</td>
-                    <td>{{ tipo_cuenta }}</td>
-                    <td>{{ glose }}</td>
-                    <td>{{ debe }}</td>
-                    <td>{{ haber }}</td>
+                    <th>Fecha</th>
+                    <th>Tipo de Cuenta</th>
+                    <th>Cuenta</th>
+                    <th>Glose</th>
+                    <th>Debe</th>
+                    <th>Haber</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for fecha, cuenta, tipo_cuenta, glose, debe, haber in libro_diario %}
+                    <tr>
+                        <td>{{ fecha }}</td>
+                        <td>{{ cuenta }}</td>
+                        <td>{{ tipo_cuenta }}</td>
+                        <td>{{ glose }}</td>
+                        <td>{{ debe }}</td>
+                        <td>{{ haber }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <h1>Mayores por tipo de cuenta</h1>
+    <h2 class="text-2xl font-bold mb-4">Mayores por tipo de cuenta</h2>
     {% for mayor in resultados_mayores %}
-        <h2>Mayor: {{ mayor.cuenta }}</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Debe</th>
-                    <th>Haber</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for fecha, debe, haber in mayor.fechas_debe_haber %}
+        <h3 class="text-xl font-semibold mb-2">Mayor: {{ mayor.cuenta }}</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full">
+                <thead>
                     <tr>
-                        <td>{{ fecha }}</td>
-                        <td>{{ debe }}</td>
-                        <td>{{ haber }}</td>
+                        <th>Fecha</th>
+                        <th>Debe</th>
+                        <th>Haber</th>
                     </tr>
-                {% endfor %}
-                <tr>
-                    <td>Total</td>
-                    <td>{{ mayor.total_debe }}</td>
-                    <td>{{ mayor.total_haber }}</td>
-                </tr>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for fecha, debe, haber in mayor.fechas_debe_haber %}
+                        <tr>
+                            <td>{{ fecha }}</td>
+                            <td>{{ debe }}</td>
+                            <td>{{ haber }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="font-bold">
+                        <td>Total</td>
+                        <td>{{ mayor.total_debe }}</td>
+                        <td>{{ mayor.total_haber }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     {% endfor %}
 
-
-
-    <h1>Mayores por cuenta</h1>
+    <h2 class="text-2xl font-bold mb-4">Mayores por cuenta</h2>
     {% for mayor in resultados_mayores_ce %}
-        <h2>Mayor: {{ mayor.tipo_cuenta }}</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Debe</th>
-                    <th>Haber</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for fecha, debe, haber in mayor.fechas_debe_haber %}
+        <h3 class="text-xl font-semibold mb-2">Mayor: {{ mayor.tipo_cuenta }}</h3>
+        <div class="overflow-x-auto mb-6">
+            <table class="w-full">
+                <thead>
                     <tr>
-                        <td>{{ fecha }}</td>
-                        <td>{{ debe }}</td>
-                        <td>{{ haber }}</td>
+                        <th>Fecha</th>
+                        <th>Debe</th>
+                        <th>Haber</th>
                     </tr>
-                {% endfor %}
+                </thead>
+                <tbody>
+                    {% for fecha, debe, haber in mayor.fechas_debe_haber %}
+                        <tr>
+                            <td>{{ fecha }}</td>
+                            <td>{{ debe }}</td>
+                            <td>{{ haber }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="font-bold">
+                        <td>Total</td>
+                        <td>{{ mayor.total_debe }}</td>
+                        <td>{{ mayor.total_haber }}</td>
+                    </tr>
+                    <tr class="font-bold">
+                        <td>Saldo Final</td>
+                        <td colspan="2">{{ mayor.saldo_final }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+
+    <h2 class="text-2xl font-bold mb-4">Estado de Resultados</h2>
+    <div class="overflow-x-auto mb-8">
+        <table class="w-full">
+            <tbody>
                 <tr>
-                    <td>Total</td>
-                    <td>{{ mayor.total_debe }}</td>
-                    <td>{{ mayor.total_haber }}</td>
+                    <td class="font-bold">VENTAS NETAS</td>
+                    <td></td>
                 </tr>
                 <tr>
-                    <td>Saldo Final</td>
-                    <td>{{ mayor.saldo_final }}</td>
+                    <td>- VENTAS</td>
+                    <td>{{ estado_resultados.ventas }}</td>
+                </tr>
+                <tr>
+                    <td>- COSTO DE VENTAS</td>
+                    <td>{{ estado_resultados.costo_ventas }}</td>
+                </tr>
+                <tr class="font-bold">
+                    <td>= UTILIDAD BRUTA</td>
+                    <td>{{ estado_resultados.utilidad_bruta }}</td>
+                </tr>
+                <tr>
+                    <td class="font-bold">-- GASTOS OPERATIVOS: </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>- GASTOS ADMINISTRATIVOS</td>
+                    <td>{{ estado_resultados.gastos_administrativos }}</td>
+                </tr>
+                <tr>
+                    <td>- GASTOS DE VENTAS</td>
+                    <td>{{ estado_resultados.gastos_ventas }}</td>
+                </tr>
+                <tr class="font-bold">
+                    <td>= UTILIDAD DE OPERACIÓN</td>
+                    <td>{{ estado_resultados.utilidad_operacion }}</td>
+                </tr>
+                <tr>
+                    <td>+ OTROS INGRESOS</td>
+                    <td>{{ estado_resultados.otros_ingresos }}</td>
+                </tr>
+                <tr>
+                    <td>+ INGRESOS FINANCIEROS</td>
+                    <td>{{ estado_resultados.ingresos_financieros }}</td>
+                </tr>
+                <tr>
+                    <td>- OTROS GASTOS</td>
+                    <td>{{ estado_resultados.otros_gastos }}</td>
+                </tr>
+                <tr>
+                    <td>- GASTOS FINANCIEROS</td>
+                    <td>{{ estado_resultados.gastos_financieros }}</td>
+                </tr>
+                <tr class="font-bold">
+                    <td>= UTILIDAD ANTES DE IMPUESTOS</td>
+                    <td>{{ estado_resultados.utilidad_antes_impuestos }}</td>
+                </tr>
+                <tr>
+                    <td>- IMPUESTO A LA RENTA</td>
+                    <td>{{ estado_resultados.impuesto_renta }}</td>
+                </tr>
+                <tr class="font-bold">
+                    <td>= UTILIDAD NETA</td>
+                    <td>{{ estado_resultados.utilidad_neta }}</td>
                 </tr>
             </tbody>
         </table>
-    {% endfor %}
-
-
-
-    <h1>Estado de Resultados</h1>
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <td><strong>VENTAS NETAS</strong></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>- VENTAS</td>
-                <td>{{ estado_resultados.ventas }}</td>
-            </tr>
-            <tr>
-                <td>- COSTO DE VENTAS</td>
-                <td>{{ estado_resultados.costo_ventas }}</td>
-            </tr>
-            <tr>
-                <td>= UTILIDAD BRUTA</td>
-                <td>{{ estado_resultados.utilidad_bruta }}</td>
-            </tr>
-            <tr>
-                <td>-- GASTOS OPERATIVOS: </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>- GASTOS ADMINISTRATIVOS</td>
-                <td>{{ estado_resultados.gastos_administrativos }}</td>
-            </tr>
-            <tr>
-                <td>- GASTOS DE VENTAS</td>
-                <td>{{ estado_resultados.gastos_ventas }}</td>
-            </tr>
-            <tr>
-                <td>= UTILIDAD DE OPERACIÓN</td>
-                <td>{{ estado_resultados.utilidad_operacion }}</td>
-            </tr>
-            <tr>
-                <td>+ OTROS INGRESOS</td>
-                <td>{{ estado_resultados.otros_ingresos }}</td>
-            </tr>
-            <tr>
-                <td>+ INGRESOS FINANCIEROS</td>
-                <td>{{ estado_resultados.ingresos_financieros }}</td>
-            </tr>
-            <tr>
-                <td>- OTROS GASTOS</td>
-                <td>{{ estado_resultados.otros_gastos }}</td>
-            </tr>
-            <tr>
-                <td>- GASTOS FINANCIEROS</td>
-                <td>{{ estado_resultados.gastos_financieros }}</td>
-            </tr>
-            <tr>
-                <td>= UTILIDAD ANTES DE IMPUESTOS</td>
-                <td>{{ estado_resultados.utilidad_antes_impuestos }}</td>
-            </tr>
-            <tr>
-                <td>- IMPUESTO A LA RENTA</td>
-                <td>{{ estado_resultados.impuesto_renta }}</td>
-            </tr>
-            <tr>
-                <td>= UTILIDAD NETA</td>
-                <td>{{ estado_resultados.utilidad_neta }}</td>
-            </tr>
-        </tbody>
-    </table>
+    </div>
     
- 
-    <h1>Estado Financiero</h1>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>**Activos**</th>
-                <th>**Monto (en $)**</th>
-                <th>**Pasivos y Patrimonio**</th>
-                <th>**Monto (en $)**</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td colspan="1"><strong>Activos Corrientes</strong></td>
-                <td></td>
-                <td><strong>Pasivos Corrientes</strong></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Efectivo y Equivalentes de Efectivo</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.10 }}</td>
-                <td>Tributos y Aportes al Sistema de Pensiones y de Salud por Pagar</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.40 }}</td>
-            </tr>
-            <tr>
-                <td>Inversiones Financieras</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.11 }}</td>
-                <td>Remuneraciones y Participaciones por Pagar</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.41 }}</td>
-            </tr>
-            <tr>
-                <td>Cuentas por Cobrar Comerciales Terceros</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.12 }}</td>
-                <td>Cuentas por Pagar Comerciales Terceros</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.42 }}</td>
-            </tr>
-            <tr>
-                <td>Cuentas por Cobrar Comerciales Relacionadas</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.13 }}</td>
-                <td>Cuentas por Pagar Comerciales Relacionadas</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.43 }}</td>
-            </tr>
-            <tr>
-                <td>Cuentas por Cobrar al Personal, a los Accionistas</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.14 }}</td>
-                <td>Cuentas por Pagar a los Accionistas, Directores y Gerentes</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.44 }}</td>
-            </tr>
-            <tr>
-                <td>Cuentas por Cobrar Diversas Terceros</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.16}}</td>
-                <td>Cuentas por Pagar Diversas Terceros</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.46}}</td>
-            </tr>
-            <tr>
-                <td>Cuentas por Cobrar Diversas Relacionadas</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.17 }}</td>
-                <td>Cuentas por Pagar Diversas Relacionadas</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.47 }}</td>
-            </tr>
-            <tr>
-                <td>Servicios y Otros Contratados por Anticipado</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.18 }}</td>
-                <td>Provisiones</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.48 }}</td>
-            </tr>
-            <tr>
-                <td>Mercaderías</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.20 }}</td>
-                <td><strong>Total Pasivos Corrientes</strong></td>
-                <td><strong>{{ estado_situacion_financiera.total_pasivo_corriente }}</strong></td>
-            </tr>
-            <tr>
-                <td>Productos Terminados</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.21 }}</td>
-                <td><strong>Pasivos No Corrientes</strong></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Subproductos, Desechos y Desperdicios</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.22 }}</td>
-                <td>Obligaciones Financieras</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.45 }}</td>
-            </tr>
-            <tr>
-                <td>Productos en Proceso</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.23 }}</td>
-                <td>Pasivo Diferido</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.49 }}</td>
-            </tr>
-            <tr>
-                <td>Materias Primas</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.24 }}</td>
-                <td><strong>Total Pasivos No Corrientes</strong></td>
-                <td><strong>{{ estado_situacion_financiera.total_pasivo_no_corriente }}</strong></td>
-            </tr>
-            <tr>
-                <td>Materiales Auxiliares, Suministros y Repuesto</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.25 }}</td>
-                <td><strong>Patrimonio</strong></td>
-                <td>{{ estado_situacion_financiera.total_patrimonio }}</td>
-            </tr>
-            <tr>
-                <td>Envases y Embalajes</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.26 }}</td>
-                <td>Capital</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.50 }}</td>
-            </tr>
-            <tr>
-                <td>Activos No Corrientes Mantenidos para la Vent</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.27 }}</td>
-                <td>Acciones de Inversión</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.51 }}</td>
-            </tr>
-            <tr>
-                <td>Existencias por Recibir</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.28 }}</td>
-                <td>Capital Adicional</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.52 }}</td>
-            </tr>
-            <tr>
-                <td><strong>Total Activos Corrientes</strong></td>
-                <td><strong>{{ estado_situacion_financiera.total_activo_corriente }}</strong></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><strong>Activos No Corrientes</strong></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Inversiones Mobiliarias</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.30 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Inversiones Inmobiliarias</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.31 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Activos Adquiridos en Arrendamiento Financiero</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.32 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Inmuebles, Maquinaria y Equipo</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.33 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Intangibles</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.34 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Activos Biológicos</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.35 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Desvalorización de Activo Inmovilizado</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.36 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Activo Diferido</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.37 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Otros Activos</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.38 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Depreciación, Amortización y Agotamiento Acumulados</td>
-                <td>{{ estado_situacion_financiera.valores_cuentas.39 }}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><strong>Total Activos No Corrientes</strong></td>
-                <td><strong>{{ estado_situacion_financiera.total_activo_no_corriente }}</strong></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td><strong>Total Activos</strong></td>
-                <td><strong>{{ estado_situacion_financiera.total_activo }}</strong></td>
-                <td><strong>Total Pasivos y Patrimonio</strong></td>
-                <td><strong>{{ estado_situacion_financiera.total_pasivo_patrimonio }}</strong></td>
-            </tr>
-        </tbody>
-    </table>
-    
-
-    
-    
-
+    <h2 class="text-2xl font-bold mb-4">Estado Financiero</h2>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th>Activos</th>
+                    <th>Monto (en $)</th>
+                    <th>Pasivos y Patrimonio</th>
+                    <th>Monto (en $)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2" class="font-bold">Activos Corrientes</td>
+                    <td colspan="2" class="font-bold">Pasivos Corrientes</td>
+                </tr>
+                <tr>
+                    <td>Efectivo y Equivalentes de Efectivo</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.10 }}</td>
+                    <td>Tributos y Aportes al Sistema de Pensiones y de Salud por Pagar</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.40 }}</td>
+                </tr>
+                <tr>
+                    <td>Inversiones Financieras</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.11 }}</td>
+                    <td>Remuneraciones y Participaciones por Pagar</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.41 }}</td>
+                </tr>
+                <tr>
+                    <td>Cuentas por Cobrar Comerciales Terceros</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.12 }}</td>
+                    <td>Cuentas por Pagar Comerciales Terceros</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.42 }}</td>
+                </tr>
+                <tr>
+                    <td>Cuentas por Cobrar Comerciales Relacionadas</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.13 }}</td>
+                    <td>Cuentas por Pagar Comerciales Relacionadas</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.43 }}</td>
+                </tr>
+                <tr>
+                    <td>Cuentas por Cobrar al Personal, a los Accionistas</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.14 }}</td>
+                    <td>Cuentas por Pagar a los Accionistas, Directores y Gerentes</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.44 }}</td>
+                </tr>
+                <tr>
+                    <td>Cuentas por Cobrar Diversas Terceros</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.16 }}</td>
+                    <td>Cuentas por Pagar Diversas Terceros</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.46 }}</td>
+                </tr>
+                <tr>
+                    <td>Cuentas por Cobrar Diversas Relacionadas</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.17 }}</td>
+                    <td>Cuentas por Pagar Diversas Relacionadas</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.47 }}</td>
+                </tr>
+                <tr>
+                    <td>Servicios y Otros Contratados por Anticipado</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.18 }}</td>
+                    <td>Provisiones</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.48 }}</td>
+                </tr>
+                <tr>
+                    <td>Mercaderías</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.20 }}</td>
+                    <td class="font-bold">Total Pasivos Corrientes</td>
+                    <td class="font-bold">{{ estado_situacion_financiera.total_pasivo_corriente }}</td>
+                </tr>
+                <tr>
+                    <td>Productos Terminados</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.21 }}</td>
+                    <td colspan="2" class="font-bold">Pasivos No Corrientes</td>
+                </tr>
+                <tr>
+                    <td>Subproductos, Desechos y Desperdicios</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.22 }}</td>
+                    <td>Obligaciones Financieras</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.45 }}</td>
+                </tr>
+                <tr>
+                    <td>Productos en Proceso</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.23 }}</td>
+                    <td>Pasivo Diferido</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.49 }}</td>
+                </tr>
+                <tr>
+                    <td>Materias Primas</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.24 }}</td>
+                    <td class="font-bold">Total Pasivos No Corrientes</td>
+                    <td class="font-bold">{{ estado_situacion_financiera.total_pasivo_no_corriente }}</td>
+                </tr>
+                <tr>
+                    <td>Materiales Auxiliares, Suministros y Repuesto</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.25 }}</td>
+                    <td class="font-bold">Patrimonio</td>
+                    <td class="font-bold">{{ estado_situacion_financiera.total_patrimonio }}</td>
+                </tr>
+                <tr>
+                    <td>Envases y Embalajes</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.26 }}</td>
+                    <td>Capital</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.50 }}</td>
+                </tr>
+                <tr>
+                    <td>Activos No Corrientes Mantenidos para la Venta</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.27 }}</td>
+                    <td>Acciones de Inversión</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.51 }}</td>
+                </tr>
+                <tr>
+                    <td>Existencias por Recibir</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.28 }}</td>
+                    <td>Capital Adicional</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.52 }}</td>
+                </tr>
+                <tr class="font-bold">
+                    <td>Total Activos Corrientes</td>
+                    <td>{{ estado_situacion_financiera.total_activo_corriente }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="font-bold">Activos No Corrientes</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Inversiones Mobiliarias</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.30 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Inversiones Inmobiliarias</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.31 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Activos Adquiridos en Arrendamiento Financiero</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.32 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Inmuebles, Maquinaria y Equipo</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.33 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Intangibles</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.34 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Activos Biológicos</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.35 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Desvalorización de Activo Inmovilizado</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.36 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Activo Diferido</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.37 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Otros Activos</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.38 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Depreciación, Amortización y Agotamiento Acumulados</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.39 }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="font-bold">
+                    <td>Total Activos No Corrientes</td>
+                    <td>{{ estado_situacion_financiera.total_activo_no_corriente }}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="font-bold">
+                    <td>Total Activos</td>
+                    <td>{{ estado_situacion_financiera.total_activo }}</td>
+                    <td>Total Pasivos y Patrimonio</td>
+                    <td>{{ estado_situacion_financiera.total_pasivo_patrimonio }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
