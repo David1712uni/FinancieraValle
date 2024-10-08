@@ -349,7 +349,7 @@ def mostrar_resultados(request):
         mayores_ce[asiento.tipo_cuenta]['total_haber'] += haber
         
 
-        if  40 <= int(tipo_cuenta) and int(tipo_cuenta) <= 59 :
+        if  40 <= int(asiento.tipo_cuenta) and int(asiento.tipo_cuenta) <= 59 :
             mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= debe
             mayores_ce[asiento.tipo_cuenta]['saldo_final'] += haber
         else:
