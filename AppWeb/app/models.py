@@ -7,6 +7,13 @@ class AsientoContable(models.Model):
     tipo_monto = models.CharField(max_length=5, choices=[('Debe', 'Debe'), ('Haber', 'Haber')])
     monto = models.FloatField()
     glose = models.TextField(blank=True, null=True)
-    
+
     def __str__(self):
         return f"{self.cuenta} ({self.fecha})"
+
+
+class Saldo_Inicial(models.Model):
+    cuenta = models.CharField(max_length=100)
+    saldo_inicial = models.DecimalField(max_digits=10, decimal_places=2)
+    def __str__(self):
+        return f"{self.cuenta} - Saldo: {self.saldo_inicial}"
