@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Registro Contable{% endblock %}
+
+{% block content %}
+    <h1 class="mt-4">Elegir Saldos Iniciales</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ saldo_form.as_p }}
+        <button type="submit" name="modificar_saldo" class="btn btn-secondary">Modificar Saldo Inicial</button>
+    </form>
+
+    <a href="{% url 'index' %}" class="btn btn-link">Volver a Página principal</a>
+{% endblock %}
+
+
+
+
+
