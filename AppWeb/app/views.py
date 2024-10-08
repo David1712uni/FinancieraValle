@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import AsientoContable
-from .forms import AsientoContableForm
+from .models import AsientoContable, Saldo_Inicial
+from .forms import AsientoContableForm, SaldoInicialForm
 
 
 
@@ -298,6 +298,8 @@ def mostrar_resultados(request):
     else:
         asientos = AsientoContable.objects.all()
 
+    saldos = Saldo_Inicial.objects.all()
+
     # Calcular el libro diario
     libro_diario = []
     for asiento in asientos:
@@ -318,12 +320,43 @@ def mostrar_resultados(request):
         mayores[asiento.cuenta]['fechas_debe_haber'].append((asiento.fecha, debe, haber))
         mayores[asiento.cuenta]['total_debe'] += debe
         mayores[asiento.cuenta]['total_haber'] += haber
-
+        
     # Transformamos los resultados a una lista para pasarlos al contexto
     resultados_mayores = [
         {'cuenta': cuenta, 'fechas_debe_haber': data['fechas_debe_haber'], 'total_debe': data['total_debe'], 'total_haber': data['total_haber']}
         for cuenta, data in mayores.items()
     ]
+
+
+    # Calcular los mayores POR CUENTA ESPECIFICA
+    mayores_ce = {}
+    for asiento in asientos:
+        if asiento.tipo_cuenta not in mayores_ce.keys():
+            mayores_ce[asiento.tipo_cuenta] = {'fechas_debe_haber': [], 'total_debe': 0, 'total_haber': 0, 'saldo_final': 0}
+
+            saldo_cuenta = saldos.filter(cuenta=asiento.tipo_cuenta).first()
+            if saldo_cuenta :
+                mayores_ce[asiento.tipo_cuenta]['saldo_final'] = float(saldo_cuenta.saldo_inicial)
+       
+        debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
+        haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
+
+        # Guardar fecha, debe y haber
+        mayores_ce[asiento.tipo_cuenta]['fechas_debe_haber'].append((asiento.fecha, debe, haber))
+        mayores_ce[asiento.tipo_cuenta]['total_debe'] += debe
+        mayores_ce[asiento.tipo_cuenta]['total_haber'] += haber
+        mayores_ce[asiento.tipo_cuenta]['saldo_final'] += debe
+        mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= haber
+
+    print(mayores_ce[asiento.tipo_cuenta]['total_debe'])
+    # Transformamos los resultados a una lista para pasarlos al contexto
+
+    resultados_mayores_ce = [
+        {'tipo_cuenta': cuentas_dict[tipo_cuenta], 'fechas_debe_haber': data['fechas_debe_haber'], 'total_debe': data['total_debe'], 'total_haber': data['total_haber'], 'saldo_final': data['saldo_final']}
+        for tipo_cuenta, data in mayores_ce.items()
+    ]
+    
+
 
     # Calcular el Estado de Resultados
     estado_resultados = {
@@ -472,6 +505,7 @@ def mostrar_resultados(request):
     context = {
         'libro_diario': libro_diario,
         'resultados_mayores': resultados_mayores,
+        'resultados_mayores_ce': resultados_mayores_ce,
         'estado_resultados': {
             'ventas': estado_resultados['ventas'],
             'costo_ventas': estado_resultados['costo_ventas'],
@@ -506,4 +540,17 @@ def mostrar_resultados(request):
 
     return render(request, 'resultados.html', context)
 
+
+
+def elegir_saldos(request):
+    saldo_form = SaldoInicialForm(request.POST or None)
+    if request.method == 'POST' and 'modificar_saldo' in request.POST:
+        if saldo_form.is_valid():
+            saldo_form.save()
+            return redirect('saldo_inicial')  # Redirige después de guardar el saldo inicial
+
+    context = {
+        'saldo_form': saldo_form,
+    }
+    return render(request, 'saldo_inicial.html', context)
     
