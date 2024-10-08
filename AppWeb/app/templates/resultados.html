@@ -10,7 +10,6 @@
         <label for="fecha_final">Fecha Final:</label>
         <input type="date" id="fecha_final" name="fecha_final" required>
         <button type="submit">Filtrar</button>
-        <button onclick="window.history.back()">Volver a la página anterior</button>
     </form>
 
     <h1>Libro Diario</h1>
@@ -39,7 +38,7 @@
         </tbody>
     </table>
 
-    <h1>Mayores</h1>
+    <h1>Mayores por tipo de cuenta</h1>
     {% for mayor in resultados_mayores %}
         <h2>Mayor: {{ mayor.cuenta }}</h2>
         <table class="table table-bordered">
@@ -66,6 +65,41 @@
             </tbody>
         </table>
     {% endfor %}
+
+
+
+    <h1>Mayores por cuenta</h1>
+    {% for mayor in resultados_mayores_ce %}
+        <h2>Mayor: {{ mayor.tipo_cuenta }}</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Debe</th>
+                    <th>Haber</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fecha, debe, haber in mayor.fechas_debe_haber %}
+                    <tr>
+                        <td>{{ fecha }}</td>
+                        <td>{{ debe }}</td>
+                        <td>{{ haber }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td>Total</td>
+                    <td>{{ mayor.total_debe }}</td>
+                    <td>{{ mayor.total_haber }}</td>
+                </tr>
+                <tr>
+                    <td>Saldo Final</td>
+                    <td>{{ mayor.saldo_final }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+
 
 
     <h1>Estado de Resultados</h1>
