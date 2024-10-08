@@ -348,7 +348,6 @@ def mostrar_resultados(request):
         mayores_ce[asiento.tipo_cuenta]['saldo_final'] += debe
         mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= haber
 
-    print(mayores_ce[asiento.tipo_cuenta]['total_debe'])
     # Transformamos los resultados a una lista para pasarlos al contexto
 
     resultados_mayores_ce = [
@@ -373,7 +372,7 @@ def mostrar_resultados(request):
 
     # Sumar las cuentas relevantes
     for asiento in asientos:
-        print(f"Cuenta: {asiento.tipo_cuenta}, Monto: {asiento.monto}")  # Para depurar
+        #print(f"Cuenta: {asiento.tipo_cuenta}, Monto: {asiento.monto}")  # Para depurar
         if asiento.tipo_cuenta == '70':
             estado_resultados['ventas'] += asiento.monto
         elif asiento.tipo_cuenta == '69':
