@@ -286,7 +286,11 @@ def mostrar_resultados(request):
     # Obtener fechas de inicio y fin desde el formulario
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_final = request.GET.get('fecha_final')
+    # Crear el diccionario con tipo de cuenta
+    cuenta_tipo_dict = {cuenta: tipo for cuenta, tipo in zip(cuentas_dict.keys(), tipo_cuenta_valor)}
 
+    # Ver el resultado
+    print(cuenta_tipo_dict)
     # Filtrar los asientos contables según las fechas, si están disponibles
     if fecha_inicio and fecha_final:
         # Convertir las fechas de cadena a objeto de fecha
