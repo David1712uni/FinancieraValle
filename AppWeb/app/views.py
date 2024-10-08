@@ -501,8 +501,7 @@ def mostrar_resultados(request):
 
     total_activo = total_activo_corriente + total_activo_no_corriente
     total_pasivo = total_pasivo_corriente + total_pasivo_no_corriente
-    total_pasivo = total_patrimonio
-    total_pasivo_patrimonio=  total_pasivo + total_pasivo
+    total_pasivo_patrimonio=  total_pasivo + total_patrimonio
 
 
     
