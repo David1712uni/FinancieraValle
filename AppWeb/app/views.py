@@ -560,7 +560,7 @@ def elegir_saldos(request):
     saldos_filtrados = Saldo_Inicial.objects.filter(id__in=[item['ultimo_id'] for item in ultimos_ids])
 
     # Formatear la salida
-    resultado = [{'cuenta': saldo.cuenta, 'saldo_inicial': saldo.saldo_inicial} for saldo in saldos_filtrados]
+    resultado = [{'cuenta': cuentas_dict[saldo.cuenta], 'saldo_inicial': saldo.saldo_inicial} for saldo in saldos_filtrados]
 
 
     context = {
