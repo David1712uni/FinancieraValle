@@ -498,10 +498,6 @@ def mostrar_resultados(request):
         elif cuenta == 'PT':
             if tipo_cuenta not in patrimonio:
                 patrimonio[tipo_cuenta] = 0
-            print(cuenta)
-            print(tipo_cuenta)
-            print(patrimonio[tipo_cuenta])
-            print(monto)
             patrimonio[tipo_cuenta] += monto
             valores_cuentas[tipo_cuenta] += monto
 
