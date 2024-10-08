@@ -463,10 +463,9 @@ def mostrar_resultados(request):
             continue
 
         if  40 <= int(tipo_cuenta) and int(tipo_cuenta) <= 59 :
-            monto = asiento.monto if -asiento.tipo_monto == 'Debe' else asiento.monto
+            monto = -asiento.monto if asiento.tipo_monto == 'Debe' else asiento.monto
         else:
             monto = asiento.monto if asiento.tipo_monto == 'Debe' else -asiento.monto
-        
 
         if cuenta== 'AC':
             if tipo_cuenta not in activos_corrientes:
