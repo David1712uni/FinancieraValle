@@ -3,11 +3,28 @@ from .models import AsientoContable
 from .models import Saldo_Inicial
 
 class AsientoContableForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AsientoContableForm, self).__init__(*args, **kwargs)
+        self.add_custom_styles()
+
+    def add_custom_styles(self):
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['style'] = ' border-radius: 10px; display:flex; margin-bottom: 10px; background-color: #f5f5f5; border: 1px solid #ccc; padding: 5px;'
+            
+            if isinstance(field.widget, forms.TextInput):
+                field.widget.attrs['style'] += 'max-width: 200px;'
+            if isinstance(field.widget, forms.Textarea):
+                field.widget.attrs['style'] += 'height: 100px; width: 100%;'
+            if isinstance(field.widget, forms.SelectMultiple):
+                field.widget.attrs['style'] += ''
+            if isinstance(field.widget, forms.DateInput):
+                field.widget.attrs['style'] += ''
     glose = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Ingrese la descripci (opcional)'}), required=False)
 
     class Meta:
         model = AsientoContable
-        fields = ['fecha', 'cuenta', 'tipo_cuenta', 'tipo_monto', 'monto', 'glose']  # Agrega 'glose' aquí
+        fields = ['fecha', 'cuenta', 'tipo_cuenta', 'tipo_monto', 'monto', 'glose']
         
         widgets = {
             'fecha': forms.DateInput(attrs={'type': 'date'}),
@@ -107,6 +124,19 @@ class AsientoContableForm(forms.ModelForm):
 
 
 class SaldoInicialForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SaldoInicialForm, self).__init__(*args, **kwargs)
+        self.add_custom_styles()
+
+    def add_custom_styles(self):
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['style'] = ' border-radius: 10px; display:flex; margin-bottom: 10px; background-color: #f5f5f5; border: 1px solid #ccc; padding: 5px;'
+            
+            if isinstance(field.widget, forms.TextInput):
+                field.widget.attrs['style'] += 'max-width: 200px;'
+            if isinstance(field.widget, forms.SelectMultiple):
+                field.widget.attrs['style'] += ''
     class Meta:
         model = Saldo_Inicial
         fields = ['cuenta', 'saldo_inicial']

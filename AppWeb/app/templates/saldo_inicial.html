@@ -9,7 +9,7 @@
         {% csrf_token %}
         {% for field in saldo_form %}
             <div class="form-group">
-                <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                <label for="{{ field.id_for_label }}" style="display: flex;" class="block text-sm font-medium text-gray-700 mb-1">
                     {{ field.label }}
                 </label>
                 {{ field }}
@@ -20,12 +20,11 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <button type="submit" name="modificar_saldo" class="btn-primary">Modificar Saldo Inicial</button>
+        <button type="submit" name="modificar_saldo" class="btn-primary" style="background-color: #1d4ed8; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+            Modificar Saldo Inicial
+        </button>
     </form>
 
-    <div class="mt-6">
-        <a href="{% url 'index' %}" class="btn-link">Volver a Página principal</a>
-    </div>
 {% endblock %}
 
 

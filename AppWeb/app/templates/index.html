@@ -8,7 +8,20 @@
     
     <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         {% csrf_token %}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <style>
+            .form-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .form-grid .full-width {
+                grid-column: span 2;
+            }
+            .form-grid .triple-width {
+                grid-column: span 3;
+            }
+        </style>
+        <div class="form-grid">
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.fecha.id_for_label }}">
                     Fecha
@@ -29,37 +42,41 @@
                 {% endif %}
             </div>
             
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.tipo_cuenta.id_for_label }}">
-                    Tipo de Cuenta
-                </label>
-                {{ form.tipo_cuenta }}
-                {% if form.tipo_cuenta.errors %}
-                    <p class="text-red-500 text-xs italic mt-2">{{ form.tipo_cuenta.errors }}</p>
-                {% endif %}
+            <div class="mb-4 triple-width">
+                <div class="grid grid-cols-3 gap-4" style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.tipo_cuenta.id_for_label }}">
+                            Tipo de Cuenta
+                        </label>
+                        {{ form.tipo_cuenta }}
+                        {% if form.tipo_cuenta.errors %}
+                            <p class="text-red-500 text-xs italic mt-2">{{ form.tipo_cuenta.errors }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.tipo_monto.id_for_label }}">
+                            Tipo de Monto
+                        </label>
+                        {{ form.tipo_monto }}
+                        {% if form.tipo_monto.errors %}
+                            <p class="text-red-500 text-xs italic mt-2">{{ form.tipo_monto.errors }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.monto.id_for_label }}">
+                            Monto
+                        </label>
+                        {{ form.monto }}
+                        {% if form.monto.errors %}
+                            <p class="text-red-500 text-xs italic mt-2">{{ form.monto.errors }}</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
             
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.tipo_monto.id_for_label }}">
-                    Tipo de Monto
-                </label>
-                {{ form.tipo_monto }}
-                {% if form.tipo_monto.errors %}
-                    <p class="text-red-500 text-xs italic mt-2">{{ form.tipo_monto.errors }}</p>
-                {% endif %}
-            </div>
-            
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.monto.id_for_label }}">
-                    Monto
-                </label>
-                {{ form.monto }}
-                {% if form.monto.errors %}
-                    <p class="text-red-500 text-xs italic mt-2">{{ form.monto.errors }}</p>
-                {% endif %}
-            </div>
-            
-            <div class="mb-4">
+            <div class="mb-4 full-width">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="{{ form.glose.id_for_label }}">
                     Glose
                 </label>
@@ -90,10 +107,10 @@
         </div>
     {% endif %}
 
-    <div class="flex justify-center space-x-4 mt-6">
+    <!-- <div class="flex justify-center space-x-4 mt-6">
         <a href="{% url 'resultados' %}" class="btn btn-secondary">Ver Resultados</a>
         <a href="{% url 'saldo_inicial' %}" class="btn btn-secondary">Modificar Saldos Iniciales</a>
-    </div>
+    </div> -->
 </div>
 
 <script>
