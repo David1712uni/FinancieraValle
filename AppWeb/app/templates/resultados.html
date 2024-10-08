@@ -184,8 +184,8 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="2" style="font-weight: bold;">ACTIVOS CORRIENTES</td>
-                    <td colspan="2" style="font-weight: bold;">PASIVOS CORRIENTES</td>
+                    <td colspan="2" style="font-weight: bold; color: #333;">ACTIVOS CORRIENTES</td>
+                    <td colspan="2" style="font-weight: bold; color: #333;">PASIVOS CORRIENTES</td>
                 </tr>
                 <tr>
                     <td>Efectivo y Equivalentes de Efectivo</td>
@@ -244,7 +244,7 @@
                 <tr>
                     <td>Productos Terminados</td>
                     <td>{{ estado_situacion_financiera.valores_cuentas.21 }}</td>
-                    <td colspan="2" style="font-weight: bold;">PASIVOS NO CORRIENTES</td>
+                    <td colspan="2" style="font-weight: bold; color: #333;">PASIVOS NO CORRIENTES</td>
                 </tr>
                 <tr>
                     <td>Subproductos, Desechos y Desperdicios</td>
@@ -267,7 +267,7 @@
                 <tr>
                     <td>Materiales Auxiliares, Suministros y Repuesto</td>
                     <td>{{ estado_situacion_financiera.valores_cuentas.25 }}</td>
-                    <td style="font-weight: bold;">PATRIMONIO</td>
+                    <td style="font-weight: bold; color: #333;">PATRIMONIO</td>
                     <td style="font-weight: bold;">{{ estado_situacion_financiera.total_patrimonio }}</td>
                 </tr>
                 <tr>
@@ -288,22 +288,28 @@
                     <td>Capital Adicional</td>
                     <td>{{ estado_situacion_financiera.valores_cuentas.52 }}</td>
                 </tr>
+                <tr>
+                    <td>Desvalorización de existencias</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.29 }}</td>
+                    <td>Resultados no realizados</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.56 }}</td>
+                </tr>
                 <tr class="font-bold">
-                    <td>Total Activos Corrientes</td>
+                    <td style="font-weight: bold;">Total Activos Corrientes</td>
                     <td>{{ estado_situacion_financiera.total_activo_corriente }}</td>
-                    <td></td>
-                    <td></td>
+                    <td>Excedente de revaluación</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.57 }}</td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="font-weight: bold;">Activos No Corrientes</td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="2" style="font-weight: bold; color: #333;">ACTIVOS NO CORRIENTES</td>
+                    <td>Reservas</td>
+                    <td>{{ estado_situacion_financiera.valores_cuentas.58 }}</td>
                 </tr>
                 <tr>
                     <td>Inversiones Mobiliarias</td>
                     <td>{{ estado_situacion_financiera.valores_cuentas.30 }}</td>
-                    <td></td>
-                    <td></td>
+                    <td style="font-weight: bold;">Total Patrimonio</td>
+                    <td style="font-weight: bold;">{{ estado_situacion_financiera.total_patrimonio }}</td>
                 </tr>
                 <tr>
                     <td>Inversiones Inmobiliarias</td>
@@ -365,10 +371,10 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr style="font-weight: bold;">
-                    <td>Total Activos</td>
+                <tr style="font-weight: bold; color: #333;">
+                    <td>TOTAL ACTIVOS</td>
                     <td>{{ estado_situacion_financiera.total_activo }}</td>
-                    <td>Total Pasivos y Patrimonio</td>
+                    <td>TOTAL PASIVOS Y PATRIMONIOS</td>
                     <td>{{ estado_situacion_financiera.total_pasivo_patrimonio }}</td>
                 </tr>
             </tbody>
