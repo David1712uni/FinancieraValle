@@ -104,7 +104,6 @@ tipo_cuenta_valor = [
     "AC",
     "AC",
     "AC",
-    "AC",
     "ANC",
     "ANC",
     "ANC",
@@ -131,7 +130,6 @@ tipo_cuenta_valor = [
     "PT",
     "PT",
     "PT",
-    "PT",
     "C",
     "C",
     "C",
@@ -142,7 +140,6 @@ tipo_cuenta_valor = [
     "C",
     "C",
     "C",
-    "CC",
     "CC",
     "CC",
     "CC",
@@ -256,6 +253,7 @@ def get_tipo_cuenta(cuenta):
     """Retorna el tipo de cuenta basado en la cuenta seleccionada."""
     if cuenta in valores_cuentas:
         idx = valores_cuentas.index(cuenta)
+        print("indice:",idx)
         return tipo_cuenta_valor[idx]
     return 'Desconocido'
 
@@ -483,6 +481,10 @@ def mostrar_resultados(request):
         elif cuenta == 'PT':
             if tipo_cuenta not in patrimonio:
                 patrimonio[tipo_cuenta] = 0
+            print(cuenta)
+            print(tipo_cuenta)
+            print(patrimonio[tipo_cuenta])
+            print(monto)
             patrimonio[tipo_cuenta] += monto
             valores_cuentas[tipo_cuenta] += monto
 
