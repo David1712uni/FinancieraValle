@@ -286,11 +286,8 @@ def mostrar_resultados(request):
     # Obtener fechas de inicio y fin desde el formulario
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_final = request.GET.get('fecha_final')
-    # Crear el diccionario con tipo de cuenta
-    cuenta_tipo_dict = {cuenta: tipo for cuenta, tipo in zip(cuentas_dict.keys(), tipo_cuenta_valor)}
 
-    # Ver el resultado
-    print(cuenta_tipo_dict)
+    
     # Filtrar los asientos contables según las fechas, si están disponibles
     if fecha_inicio and fecha_final:
         # Convertir las fechas de cadena a objeto de fecha
@@ -311,6 +308,16 @@ def mostrar_resultados(request):
 
     # Calcular los mayores
     mayores = {}
+    cuenta_nombre= { 
+    "AC": "Activo Corriente",
+    "ANC": "Activo No Corriente",
+    "P": "Pasivo",
+    "PT": "Patrimonio",
+    "C": "Costos o gastos",
+    "CC": "Cuentas de Cierre",
+    "CEA": "Cuentas Analíticas de Explotación",
+    "I": "Ingresos"
+    }
     for asiento in asientos:
         if asiento.cuenta not in mayores:
             mayores[asiento.cuenta] = {'fechas_debe_haber': [], 'total_debe': 0, 'total_haber': 0}
@@ -325,7 +332,7 @@ def mostrar_resultados(request):
         
     # Transformamos los resultados a una lista para pasarlos al contexto
     resultados_mayores = [
-        {'cuenta': cuenta, 'fechas_debe_haber': data['fechas_debe_haber'], 'total_debe': data['total_debe'], 'total_haber': data['total_haber']}
+        {'cuenta': cuenta_nombre[cuenta], 'fechas_debe_haber': data['fechas_debe_haber'], 'total_debe': data['total_debe'], 'total_haber': data['total_haber']}
         for cuenta, data in mayores.items()
     ]
 
