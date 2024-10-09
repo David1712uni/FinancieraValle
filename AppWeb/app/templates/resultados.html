@@ -18,7 +18,16 @@
         <button type="submit" class="btn-primary" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Filtrar</button>
     </form>
 
-    <h2 class="text-2xl font-bold mb-4">Libro Diario</h2>
+    <h1 class="text-3xl font-bold mb-6">Buscar</h1>
+    <div style="margin-top: 20px;" class="mb-6">
+        <a href="#libro_diario" class="btn-primary" style="background-color: #007BFF; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Libro diario</a>
+        <a href="#mayores_tipo_cuenta" class="btn-primary" style="margin-right: 10px; background-color: #007BFF; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Mayores por tipo de cuenta</a>
+        <a href="#mayores_cuenta" class="btn-primary" style="margin-right: 10px; background-color: #007BFF; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Mayores por cuenta</a>
+        <a href="#estado_resultados" class="btn-primary" style="margin-right: 10px; background-color: #007BFF; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Estado de Resultados</a>
+        <a href="#estado_financiero" class="btn-primary" style="background-color: #007BFF; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none;">Estado Situación Financiera</a>
+    </div>
+
+    <h2 id="libro_diario" class="text-2xl font-bold mb-4">Libro Diario</h2>
     <div class="overflow-x-auto mb-8">
         <table class="w-full">
             <thead>
@@ -46,7 +55,7 @@
         </table>
     </div>
 
-    <h2 class="text-2xl font-bold mb-4">Mayores por tipo de cuenta</h2>
+    <h2 id="mayores_tipo_cuenta" class="text-2xl font-bold mb-4">Mayores por tipo de cuenta</h2>
     {% for mayor in resultados_mayores %}
         <h3 class="text-xl font-semibold mb-2">Mayor: {{ mayor.cuenta }}</h3>
         <div class="overflow-x-auto mb-6">
@@ -76,7 +85,7 @@
         </div>
     {% endfor %}
 
-    <h2 class="text-2xl font-bold mb-4">Mayores por cuenta</h2>
+    <h2 id="mayores_cuenta" class="text-2xl font-bold mb-4">Mayores por cuenta</h2>
     {% for mayor in resultados_mayores_ce %}
         <h3 class="text-xl font-semibold mb-2">Mayor: {{ mayor.tipo_cuenta }}</h3>
         <div class="overflow-x-auto mb-6">
@@ -110,7 +119,7 @@
         </div>
     {% endfor %}
 
-    <h2 class="text-2xl font-bold mb-4">Estado de Resultados</h2>
+    <h2 id="estado_resultados" class="text-2xl font-bold mb-4">Estado de Resultados</h2>
     <div class="overflow-x-auto mb-8">
         <table class="w-full">
             <tbody>
@@ -171,7 +180,7 @@
         </table>
     </div>
     
-    <h2 class="text-2xl font-bold mb-4">Estado Financiero</h2>
+    <h2 id="estado_financiero" class="text-2xl font-bold mb-4">Estado Financiero</h2>
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead>
