@@ -11,7 +11,7 @@ COPY . .
 RUN pip install --no-cache-dir Django
 
 # Expón el puerto que utilizará tu aplicación Django
-EXPOSE 8000
+EXPOSE 80
 
 # Comando para ejecutar el servidor de desarrollo de Django
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
