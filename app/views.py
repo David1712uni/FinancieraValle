@@ -281,147 +281,120 @@ def index(request):
     return render(request, 'index.html', context)
 
 from django.utils import timezone
+from django.shortcuts import render
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_protect
 
-def mostrar_resultados(request):
-    # Obtener fechas de inicio y fin desde el formulario
+# Helper function to extract date range from request
+def obtener_fechas(request):
     fecha_inicio = request.GET.get('fecha_inicio')
     fecha_final = request.GET.get('fecha_final')
 
-    
-    # Filtrar los asientos contables según las fechas, si están disponibles
     if fecha_inicio and fecha_final:
-        # Convertir las fechas de cadena a objeto de fecha
         fecha_inicio = timezone.datetime.strptime(fecha_inicio, '%Y-%m-%d')
         fecha_final = timezone.datetime.strptime(fecha_final, '%Y-%m-%d')
-        asientos = AsientoContable.objects.filter(fecha__range=(fecha_inicio, fecha_final))
-    else:
-        asientos = AsientoContable.objects.all()
+        return fecha_inicio, fecha_final
+    return None, None
 
-    saldos = Saldo_Inicial.objects.all()
+# Helper function to calculate libro diario
+def calcular_libro_diario(asientos):
+    return [
+        (asiento.fecha, asiento.cuenta, cuentas_dict[asiento.tipo_cuenta], asiento.glose, obtener_monto(asiento, 'Debe'), obtener_monto(asiento, 'Haber'))
+        for asiento in asientos
+    ]
 
-    # Calcular el libro diario
-    libro_diario = []
-    for asiento in asientos:
-        debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
-        haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
-        libro_diario.append((asiento.fecha, asiento.cuenta, cuentas_dict[asiento.tipo_cuenta], asiento.glose, debe, haber))
-
-    # Calcular los mayores
+# Helper function to calculate mayores
+def calcular_mayores(asientos):
     mayores = {}
-    cuenta_nombre= { 
-    "AC": "Activo Corriente",
-    "ANC": "Activo No Corriente",
-    "P": "Pasivo",
-    "PT": "Patrimonio",
-    "C": "Costos o gastos",
-    "CC": "Cuentas de Cierre",
-    "CEA": "Cuentas Analíticas de Explotación",
-    "I": "Ingresos"
+    cuenta_nombre = {
+        "AC": "Activo Corriente",
+        "ANC": "Activo No Corriente",
+        "P": "Pasivo",
+        "PT": "Patrimonio",
+        "C": "Costos o gastos",
+        "CC": "Cuentas de Cierre",
+        "CEA": "Cuentas Analíticas de Explotación",
+        "I": "Ingresos"
     }
+    
     for asiento in asientos:
         if asiento.cuenta not in mayores:
             mayores[asiento.cuenta] = {'fechas_debe_haber': [], 'total_debe': 0, 'total_haber': 0}
 
-        debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
-        haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
+        debe = obtener_monto(asiento, 'Debe')
+        haber = obtener_monto(asiento, 'Haber')
 
-        # Guardar fecha, debe y haber
         mayores[asiento.cuenta]['fechas_debe_haber'].append((asiento.fecha, debe, haber))
         mayores[asiento.cuenta]['total_debe'] += debe
         mayores[asiento.cuenta]['total_haber'] += haber
-        
-    # Transformamos los resultados a una lista para pasarlos al contexto
-    resultados_mayores = [
+
+    return [
         {'cuenta': cuenta_nombre[cuenta], 'fechas_debe_haber': data['fechas_debe_haber'], 'total_debe': data['total_debe'], 'total_haber': data['total_haber']}
         for cuenta, data in mayores.items()
     ]
 
-
-    # Calcular los mayores POR CUENTA ESPECIFICA
+# Helper function to calculate mayores by specific account
+def calcular_mayores_ce(asientos, saldos):
     mayores_ce = {}
     for asiento in asientos:
-        if asiento.tipo_cuenta not in mayores_ce.keys():
+        if asiento.tipo_cuenta not in mayores_ce:
             mayores_ce[asiento.tipo_cuenta] = {'fechas_debe_haber': [], 'total_debe': 0, 'total_haber': 0, 'saldo_final': 0}
-
+            
             saldo_cuenta = saldos.filter(cuenta=asiento.tipo_cuenta).last()
-            if saldo_cuenta :
+            if saldo_cuenta:
                 mayores_ce[asiento.tipo_cuenta]['saldo_final'] = float(saldo_cuenta.saldo_inicial)
 
-        debe = asiento.monto if asiento.tipo_monto == 'Debe' else 0
-        haber = asiento.monto if asiento.tipo_monto == 'Haber' else 0
+        debe = obtener_monto(asiento, 'Debe')
+        haber = obtener_monto(asiento, 'Haber')
 
-        # Guardar fecha, debe y haber
         mayores_ce[asiento.tipo_cuenta]['fechas_debe_haber'].append((asiento.fecha, debe, haber))
         mayores_ce[asiento.tipo_cuenta]['total_debe'] += debe
         mayores_ce[asiento.tipo_cuenta]['total_haber'] += haber
-        
 
-        if  40 <= int(asiento.tipo_cuenta) and int(asiento.tipo_cuenta) <= 59 :
+        if 40 <= int(asiento.tipo_cuenta) <= 59:
             mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= debe
             mayores_ce[asiento.tipo_cuenta]['saldo_final'] += haber
         else:
             mayores_ce[asiento.tipo_cuenta]['saldo_final'] += debe
             mayores_ce[asiento.tipo_cuenta]['saldo_final'] -= haber
-        
 
-    # Transformamos los resultados a una lista para pasarlos al contexto
-
-    resultados_mayores_ce = [
+    return [
         {'tipo_cuenta': cuentas_dict[tipo_cuenta], 'fechas_debe_haber': data['fechas_debe_haber'], 'total_debe': data['total_debe'], 'total_haber': data['total_haber'], 'saldo_final': data['saldo_final']}
         for tipo_cuenta, data in mayores_ce.items()
     ]
-    
 
-
-    # Calcular el Estado de Resultados
+# Helper function to calculate the state of results
+def calcular_estado_resultados(asientos):
     estado_resultados = {
-        'ventas': 0,
-        'costo_ventas': 0,
-        'gastos_administrativos': 0,
-        'gastos_ventas': 0,
-        'otros_ingresos': 0,
-        'ingresos_financieros': 0,
-        'otros_gastos': 0,
-        'gastos_financieros': 0,
-        'impuesto_renta': 0,
+        'ventas': 0, 'costo_ventas': 0, 'gastos_administrativos': 0, 'gastos_ventas': 0,
+        'otros_ingresos': 0, 'ingresos_financieros': 0, 'otros_gastos': 0, 'gastos_financieros': 0, 'impuesto_renta': 0
     }
 
-    # Sumar las cuentas relevantes
     for asiento in asientos:
-        #print(f"Cuenta: {asiento.tipo_cuenta}, Monto: {asiento.monto}")  # Para depurar
-        if asiento.tipo_cuenta == '70':
-            estado_resultados['ventas'] += asiento.monto
-        elif asiento.tipo_cuenta == '69':
-            estado_resultados['costo_ventas'] += asiento.monto
-        elif asiento.tipo_cuenta == '94':
-            estado_resultados['gastos_administrativos'] += asiento.monto
-        elif asiento.tipo_cuenta == '95':
-            estado_resultados['gastos_ventas'] += asiento.monto
-        elif asiento.tipo_cuenta == '75':
-            estado_resultados['otros_ingresos'] += asiento.monto
-        elif asiento.tipo_cuenta == '77':
-            estado_resultados['ingresos_financieros'] += asiento.monto
-        elif asiento.tipo_cuenta == '65':
-            estado_resultados['otros_gastos'] += asiento.monto
-        elif asiento.tipo_cuenta == '67':
-            estado_resultados['gastos_financieros'] += asiento.monto
-        elif asiento.tipo_cuenta == '88':
-            estado_resultados['impuesto_renta'] += asiento.monto
+        if asiento.tipo_cuenta == '70': estado_resultados['ventas'] += asiento.monto
+        elif asiento.tipo_cuenta == '69': estado_resultados['costo_ventas'] += asiento.monto
+        elif asiento.tipo_cuenta == '94': estado_resultados['gastos_administrativos'] += asiento.monto
+        elif asiento.tipo_cuenta == '95': estado_resultados['gastos_ventas'] += asiento.monto
+        elif asiento.tipo_cuenta == '75': estado_resultados['otros_ingresos'] += asiento.monto
+        elif asiento.tipo_cuenta == '77': estado_resultados['ingresos_financieros'] += asiento.monto
+        elif asiento.tipo_cuenta == '65': estado_resultados['otros_gastos'] += asiento.monto
+        elif asiento.tipo_cuenta == '67': estado_resultados['gastos_financieros'] += asiento.monto
+        elif asiento.tipo_cuenta == '88': estado_resultados['impuesto_renta'] += asiento.monto
 
-    # Calcular utilidades
     utilidad_bruta = estado_resultados['ventas'] - estado_resultados['costo_ventas']
     utilidad_operacion = utilidad_bruta - estado_resultados['gastos_administrativos'] - estado_resultados['gastos_ventas']
     utilidad_antes_impuestos = utilidad_operacion + estado_resultados['otros_ingresos'] + estado_resultados['ingresos_financieros'] - estado_resultados['otros_gastos'] - estado_resultados['gastos_financieros']
     utilidad_neta = utilidad_antes_impuestos - estado_resultados['impuesto_renta']
 
+    return estado_resultados, utilidad_bruta, utilidad_operacion, utilidad_antes_impuestos, utilidad_neta
 
-    #Estado Financiero
+# Helper function to calculate the financial situation
+def calcular_situacion_financiera(asientos):
     activos_corrientes = {}
     pasivos_corrientes = {}
     activos_no_corrientes = {}
     pasivos_no_corrientes = {}
     patrimonio = {}
-
     valores_cuentas = {
         '10': 0,
         '11': 0,
@@ -520,47 +493,69 @@ def mostrar_resultados(request):
     total_pasivo_patrimonio=  total_pasivo + total_patrimonio
 
 
-    
 
-    context = {
-        'libro_diario': libro_diario,
-        'resultados_mayores': resultados_mayores,
-        'resultados_mayores_ce': resultados_mayores_ce,
-        'estado_resultados': {
-            'ventas': estado_resultados['ventas'],
-            'costo_ventas': estado_resultados['costo_ventas'],
-            'utilidad_bruta': utilidad_bruta,
-            'gastos_administrativos': estado_resultados['gastos_administrativos'],
-            'gastos_ventas': estado_resultados['gastos_ventas'],
-            'utilidad_operacion': utilidad_operacion,
-            'otros_ingresos': estado_resultados['otros_ingresos'],
-            'ingresos_financieros': estado_resultados['ingresos_financieros'],
-            'otros_gastos': estado_resultados['otros_gastos'],
-            'gastos_financieros': estado_resultados['gastos_financieros'],
-            'utilidad_antes_impuestos': utilidad_antes_impuestos,
-            'impuesto_renta': estado_resultados['impuesto_renta'],
-            'utilidad_neta': utilidad_neta,
-        },
-        'estado_situacion_financiera': {
+    return {
         'activos_corrientes': activos_corrientes,
         'pasivos_corrientes': pasivos_corrientes,
         'activos_no_corrientes': activos_no_corrientes,
+        'pasivos_no_corrientes': pasivos_no_corrientes,
         'patrimonio': patrimonio,
         'total_activo_corriente': total_activo_corriente,
-        'total_activo_no_corriente': total_activo_no_corriente,
         'total_pasivo_corriente': total_pasivo_corriente,
+        'total_activo_no_corriente': total_activo_no_corriente,
         'total_pasivo_no_corriente': total_pasivo_no_corriente,
         'total_activo': total_activo,
         'total_pasivo': total_pasivo,
         'total_patrimonio': total_patrimonio,
         'total_pasivo_patrimonio': total_pasivo_patrimonio,
-        'valores_cuentas' : valores_cuentas
+        'valores_cuentas': valores_cuentas
+    }
+
+# Helper function to get monto from asiento
+def obtener_monto(asiento, tipo):
+    return asiento.monto if asiento.tipo_monto == tipo else 0
+
+@csrf_protect
+def mostrar_resultados(request):
+    # Get date range from the request
+    fecha_inicio, fecha_final = obtener_fechas(request)
+
+    # Get the asientos based on the date range
+    if fecha_inicio and fecha_final:
+        asientos = AsientoContable.objects.filter(fecha__range=(fecha_inicio, fecha_final))
+    else:
+        asientos = AsientoContable.objects.all()
+
+    # Get initial balances (Saldos)
+    saldos = Saldo_Inicial.objects.all()
+
+    # Calculate results
+    resultados_mayores = calcular_mayores(asientos)
+    resultados_mayores_ce = calcular_mayores_ce(asientos, saldos)
+    estado_resultados, utilidad_bruta, utilidad_operacion, utilidad_antes_impuestos, utilidad_neta = calcular_estado_resultados(asientos)
+    estado_situacion_financiera = calcular_situacion_financiera(asientos)
+
+    # Prepare context data
+    context = {
+        'libro_diario': calcular_libro_diario(asientos),
+        'resultados_mayores': resultados_mayores,
+        'resultados_mayores_ce': resultados_mayores_ce,
+        'estado_resultados': {
+            'ventas': estado_resultados['ventas'], 'costo_ventas': estado_resultados['costo_ventas'],
+            'utilidad_bruta': utilidad_bruta, 'gastos_administrativos': estado_resultados['gastos_administrativos'],
+            'gastos_ventas': estado_resultados['gastos_ventas'], 'utilidad_operacion': utilidad_operacion,
+            'otros_ingresos': estado_resultados['otros_ingresos'], 'ingresos_financieros': estado_resultados['ingresos_financieros'],
+            'otros_gastos': estado_resultados['otros_gastos'], 'gastos_financieros': estado_resultados['gastos_financieros'],
+            'utilidad_antes_impuestos': utilidad_antes_impuestos, 'impuesto_renta': estado_resultados['impuesto_renta'],
+            'utilidad_neta': utilidad_neta,
         },
+        'estado_situacion_financiera': estado_situacion_financiera,
     }
 
     return render(request, 'resultados.html', context)
 
 
+ 
 
 def elegir_saldos(request):
     saldo_form = SaldoInicialForm(request.POST or None)
