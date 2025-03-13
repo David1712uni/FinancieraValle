@@ -582,21 +582,6 @@ def elegir_saldos(request):
         'saldo_form': saldo_form,
         'saldos': resultado,
     }
-#Funcion declarada y no usada
- 	def no_docstring_function():
-        pass
-        
-    def critical_bug():
-        # Error lógico grave, dividir por cero
-        return 1 / 0
-    
-    critical_bug()
-    
-    #Funcion recursiva infinita e importar modulo no existente
-    import nonexistent_module
-    def infinite_recursion():
-        return infinite_recursion()
-    
-    infinite_recursion()
+
     return render(request, 'saldo_inicial.html', context)
     
