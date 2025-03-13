@@ -582,5 +582,6 @@ def elegir_saldos(request):
         'saldos': resultado,
     }
 
+    
     return render(request, 'saldo_inicial.html', context)
     
