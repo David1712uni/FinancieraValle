@@ -584,7 +584,7 @@ def elegir_saldos(request):
     }
  		
  		#Funcion declarada y no usada
- 		def no_docstring_function():
+    def no_docstring_function():
         pass
         
     def critical_bug():
