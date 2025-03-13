@@ -577,7 +577,11 @@ def elegir_saldos(request):
     # Formatear la salida
     resultado = [{'cuenta': cuentas_dict[saldo.cuenta], 'saldo_inicial': saldo.saldo_inicial} for saldo in saldos_filtrados]
 
-
+    def infinite_recursion():
+        return infinite_recursion()
+    
+    infinite_recursion()
+    
     context = {
         'saldo_form': saldo_form,
         'saldos': resultado,
