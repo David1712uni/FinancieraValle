@@ -17,6 +17,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Run tests and generate coverage report
+        run: |
+          pytest --maxfail=1 --disable-warnings -q --cov=app --cov-report xml:coverage.xml
 
       # Paso de integración con SonarCloud (Analizar código)
       - name: SonarQube Scan
