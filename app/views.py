@@ -582,10 +582,6 @@ def elegir_saldos(request):
         'saldos': resultado,
     }
 
-    def infinite_recursion():
-        return infinite_recursion()
-    
-    infinite_recursion()
     
     return render(request, 'saldo_inicial.html', context)
     
