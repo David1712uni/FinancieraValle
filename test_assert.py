@@ -3,8 +3,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
-from .models import AsientoContable
-from .forms import AsientoContableForm
+from app.models import AsientoContable
+from app.forms import AsientoContableForm
 from unittest.mock import patch
 from django.contrib.auth import get_user_model
 
